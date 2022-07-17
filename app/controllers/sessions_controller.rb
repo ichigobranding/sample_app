@@ -4,16 +4,21 @@ class SessionsController < ApplicationController
   end
 
   def create
-    @user = User.find_by(email: params[:session][:email])
-    if !@user.nil?
-      flash[:success] = "ログインしました"
-      @user　い
+    user = User.find_by(email: params[:session][:email].downcase)
+    if user && user.authenticate(params[:session][:password])
+      flash.now[:success] = "ログインしました"
+      # todo    log_in @user 追加した
+      log_in user
+      redirect_to user
     else
-      flash[:false] = "エラーです"
-     render 'new'
+      flash.now[:danger] = "エラーです"
+      render 'new'
     end
   end
 
+  # Delete /logout
   def destroy
+    log_out
+    redirect_to root_url
   end
 end

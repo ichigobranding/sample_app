@@ -14,6 +14,7 @@ class UsersController < ApplicationController
     if @user.save
       #successu
       # GET "/users/#{@user.id}"
+      log_in @user
       flash[:success] = "やったね！"
       redirect_to @user
       # =>redirect_to user_path(@user)
